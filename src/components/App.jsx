@@ -101,7 +101,7 @@ function App() {
     setSelectedCard({});
   }
 
-  let loggedIn = false;
+  let loggedIn = true;
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -122,7 +122,6 @@ function App() {
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
             />
-
             <Route path="/sign-up">
               <Register />
             </Route>

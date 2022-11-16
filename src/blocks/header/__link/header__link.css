@@ -1,0 +1,27 @@
+.header__link {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.22;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media (max-width: 940px) {
+  .header__link {
+    margin-right: 30px;
+  }
+}
+
+@media (max-width: 500px) {
+  .header__link {
+    font-size: 14px;
+    line-height: 17px;
+    padding-bottom: 1px;
+  }
+}

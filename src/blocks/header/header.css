@@ -5,16 +5,16 @@
   padding-bottom: 41px;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap-reverse;
   justify-content: space-between;
   width: 100%;
   max-width: 880px;
-  border-bottom: 1px solid rgba(84, 84, 84, .7);
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
 }
 
-@media (max-width: 320px) {
+@media (max-width: 500px) {
   .header {
     padding-top: 28px;
-    padding-bottom: 31.6px;
+    padding-bottom: 30px;
   }
 }

@@ -1,0 +1,18 @@
+.header__email {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+@media (max-width: 500px) {
+  .header__email {
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
