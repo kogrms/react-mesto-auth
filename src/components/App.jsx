@@ -11,7 +11,7 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import PopupWithForm from "./PopupWithForm";
+import ConfirmPopup from "./ConfirmPopup";
 import api from "../utils/api.js";
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [cardToDelete, setCardToDelete] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
@@ -57,11 +58,11 @@ function App() {
       });
   }
 
-  function handleCardDelete(card, e) {
-    api
-      .deleteCard(card._id)
-      .then(setCards((state) => state.filter((c) => c._id !== card._id)))
-      .catch((err) => console.log(err));
+  function handleCardDelete(card) {
+    setCardToDelete({
+      isOpen: true,
+      ...card,
+    });
   }
 
   function handleUpdateUser(newUserData) {
@@ -94,11 +95,22 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  function handleConfirmDeletion(card) {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({});
+    setCardToDelete({});
   }
 
   let loggedIn = true;
@@ -149,16 +161,17 @@ function App() {
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
           />
-          <PopupWithForm name="confirm" title="Вы уверены?">
-            <button
-              type="submit"
-              className="form__submit-button"
-              aria-label="Кнопка подтверждения удаления фото"
-            >
-              Да
-            </button>
-          </PopupWithForm>
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <ConfirmPopup
+            // isOpen={cardToDelete.isOpen}
+            card={cardToDelete}
+            onClose={closeAllPopups}
+            onConfirmDeletion={handleConfirmDeletion}
+          />
+          <ImagePopup
+            card={selectedCard}
+            onClose={closeAllPopups}
+            isOpen={selectedCard.isOpen}
+          />
         </div>
       </div>
     </CurrentUserContext.Provider>
