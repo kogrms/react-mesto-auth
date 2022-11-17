@@ -114,7 +114,7 @@ function App() {
     setCardToDelete({});
   }
 
-  let loggedIn = false;
+  let loggedIn = true;
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
