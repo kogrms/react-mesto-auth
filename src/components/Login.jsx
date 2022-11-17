@@ -1,8 +1,8 @@
 function Login({ onSubmit, email, password, onEmailChange, onPasswordChange }) {
   return (
-    <form className="auth-form" name="register" onSubmit={onSubmit}>
-      <div className="auth-form__input-group">
-        <h2 className="auth-form__title">Войти</h2>
+    <form className="auth-form" name="login" onSubmit={onSubmit}>
+      <div className="auth-form__input-container">
+        <h2 className="auth-form__title">Вход</h2>
         <input
           className="auth-form__input"
           type="email"
@@ -18,8 +18,12 @@ function Login({ onSubmit, email, password, onEmailChange, onPasswordChange }) {
           onChange={onPasswordChange}
         />
       </div>
-      <div className="auth-form__button-group">
-        <button className="auth-form__button" type="submit">
+      <div className="auth-form__submit-container">
+        <button
+          className="auth-form__submit-button"
+          type="submit"
+          aria-label="Кнопка отправки формы"
+        >
           Войти
         </button>
       </div>

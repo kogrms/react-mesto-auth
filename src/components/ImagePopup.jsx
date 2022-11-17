@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-function ImagePopup({ card, onClose, isOpen }) {
+function ImagePopup({ card, onClose }) {
   useEffect(() => {
-    if (!isOpen) return;
+    if (!card.isOpen) return;
     const closeByEscape = (e) => {
       if (e.key === "Escape") {
         onClose();
@@ -11,7 +11,7 @@ function ImagePopup({ card, onClose, isOpen }) {
 
     document.addEventListener("keydown", closeByEscape);
     return () => document.removeEventListener("keydown", closeByEscape);
-  }, [isOpen, onClose]);
+  }, [card.isOpen, onClose]);
 
   const handleOverlay = (e) => {
     if (e.target === e.currentTarget) {

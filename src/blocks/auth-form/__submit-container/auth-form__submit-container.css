@@ -1,0 +1,15 @@
+.auth-form__submit-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 85px;
+}
+
+@media screen and (max-width: 580px) {
+  .auth-form__button-group {
+    margin: 0 auto;
+  }
+}

@@ -1,4 +1,4 @@
-import myId from "./myId";
+import myId from "./myid";
 
 class Api {
   constructor(id) {

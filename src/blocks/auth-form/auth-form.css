@@ -1,0 +1,24 @@
+.auth-form {
+  margin: 0;
+  padding-top: 60px;
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 358px;
+  min-height: calc(100vh - 260px);
+}
+
+@media screen and (max-width: 418px) {
+  .auth-form {
+    max-width: calc(100vw - 60px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .auth-form {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    min-height: calc(100vh - 165px);
+  }
+}

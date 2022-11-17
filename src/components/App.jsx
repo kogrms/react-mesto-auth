@@ -13,6 +13,7 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmPopup from "./ConfirmPopup";
 import api from "../utils/api.js";
+import * as auth from "../utils/auth.js";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -113,7 +114,7 @@ function App() {
     setCardToDelete({});
   }
 
-  let loggedIn = true;
+  let loggedIn = false;
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -144,8 +145,8 @@ function App() {
               {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
             </Route>
           </Switch>
+          {loggedIn && <Footer />}
 
-          <Footer />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
@@ -162,16 +163,11 @@ function App() {
             onUpdateAvatar={handleUpdateAvatar}
           />
           <ConfirmPopup
-            // isOpen={cardToDelete.isOpen}
             card={cardToDelete}
             onClose={closeAllPopups}
             onConfirmDeletion={handleConfirmDeletion}
           />
-          <ImagePopup
-            card={selectedCard}
-            onClose={closeAllPopups}
-            isOpen={selectedCard.isOpen}
-          />
+          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         </div>
       </div>
     </CurrentUserContext.Provider>
