@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthForm from "./AuthForm";
@@ -19,15 +19,40 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const [selectedCard, setSelectedCard] = useState({});
   const [cardToDelete, setCardToDelete] = useState({});
+
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
+  const token = localStorage.getItem("token");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const history = useHistory();
+
+  // useEffect(() => {
+  //   api.getUserInfo().then(setCurrentUser).catch(console.log);
+  //   api.getInitialCards().then(setCards).catch(console.log);
+  // }, []);
+
   useEffect(() => {
-    api.getUserInfo().then(setCurrentUser).catch(console.log);
-    api.getInitialCards().then(setCards).catch(console.log);
-  }, []);
+    if (token) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([userData, cardData]) => {
+          // setEmail(userData.email);
+          setCurrentUser(userData);
+          setCards(cardData);
+          setLoggedIn(true);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedIn, token]);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
@@ -110,19 +135,87 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsInfoTooltipOpen(false);
     setSelectedCard({});
     setCardToDelete({});
   }
 
-  let loggedIn = false;
-  let success = false;
-  let isInfoTooltipOpen = true;
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
+
+  function handleRegisterSubmit(e) {
+    e.preventDefault();
+    auth
+      .signUp({ password, email })
+      .then((res) => {
+        if (res) {
+          setEmail("");
+          setPassword("");
+          history.push("/login");
+          setSuccess(true);
+        } else {
+          setSuccess(false);
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsInfoTooltipOpen(true);
+      });
+  }
+
+  function handleLoginSubmit(e) {
+    e.preventDefault();
+    auth
+      .signIn({ password, email })
+      .then((data) => {
+        setPassword("");
+        localStorage.setItem("token", data.token);
+        setLoggedIn(true);
+        history.push("/");
+        setIsInfoTooltipOpen(true);
+      })
+      .catch((err) => {
+        setSuccess(false);
+        setIsInfoTooltipOpen(true);
+        console.log(err);
+      });
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setLoggedIn(false);
+    setIsInfoTooltipOpen(false);
+    history.push("/sign-in");
+  }
+
+  const checkToken = useCallback(() => {
+    if (!token) {
+      return;
+    }
+    auth
+      .getUserInfo(token)
+      .then((res) => {
+        setLoggedIn(true);
+        setEmail(res.data.email);
+        history.push("/");
+      })
+      .catch((err) => console.log(err));
+  }, [token, history]);
+
+  useEffect(() => {
+    checkToken();
+  }, [checkToken]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <div className="page">
-          <Header />
+          <Header email={email} onLogout={handleLogout} />
           <Switch>
             <Route path="/sign-in">
               {loggedIn ? (
@@ -130,11 +223,11 @@ function App() {
               ) : (
                 <AuthForm
                   authFormType={"login"}
-                  // onSubmit={handleLoginSubmit}
-                  // email={email}
-                  // password={password}
-                  // onEmailChange={handleEmailChange}
-                  // onPasswordChange={handlePasswordChange}
+                  onSubmit={handleLoginSubmit}
+                  email={email}
+                  password={password}
+                  onEmailChange={handleEmailChange}
+                  onPasswordChange={handlePasswordChange}
                 />
               )}
             </Route>
@@ -144,11 +237,11 @@ function App() {
               ) : (
                 <AuthForm
                   authFormType={"register"}
-                  // onSubmit={handleLoginSubmit}
-                  // email={email}
-                  // password={password}
-                  // onEmailChange={handleEmailChange}
-                  // onPasswordChange={handlePasswordChange}
+                  onSubmit={handleRegisterSubmit}
+                  email={email}
+                  password={password}
+                  onEmailChange={handleEmailChange}
+                  onPasswordChange={handlePasswordChange}
                 />
               )}
             </Route>

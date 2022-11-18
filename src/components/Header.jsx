@@ -36,7 +36,7 @@ function Header({ email, onLogout }) {
                 burgerIsOpened && "header__menu_opened"
               }`}
             >
-              <p className="header__email">EMAIL@УДАЛИТЬ{email}</p>
+              <p className="header__email">{email}</p>
               <button
                 className="header__logout-button"
                 type="button"

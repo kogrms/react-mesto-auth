@@ -5,19 +5,19 @@ function handleResponse(res) {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 }
 
-export function signUp({ email, password }) {
+export function signUp({ password, email }) {
   return fetch(`${baseUrl}/signup`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ password, email }),
   }).then((res) => handleResponse(res));
 }
 
-export function signIn({ email, password }) {
+export function signIn({ password, email }) {
   return fetch(`${baseUrl}/signin`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ password, email }),
   }).then((res) => handleResponse(res));
 }
 
