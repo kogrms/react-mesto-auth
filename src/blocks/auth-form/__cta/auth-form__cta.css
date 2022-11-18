@@ -1,0 +1,15 @@
+.auth-form__cta {
+  margin: 0;
+  margin-top: 15px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #fff;
+}
+
+@media screen and (max-width: 500px) {
+  .auth-form__cta {
+    margin-top: 20px;
+  }
+}

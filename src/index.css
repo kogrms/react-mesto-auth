@@ -13,6 +13,8 @@
 @import url(./blocks/auth-form/__input/auth-form__input.css);
 @import url(./blocks/auth-form/__submit-container/auth-form__submit-container.css);
 @import url(./blocks/auth-form/__submit-button/auth-form__submit-button.css);
+@import url(./blocks/auth-form/__cta/auth-form__cta.css);
+@import url(./blocks/auth-form/__cta-link/auth-form__cta-link.css);
 
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import ProtectedRoute from "./ProtectedRoute";
-import Register from "./Register";
-import Login from "./Login";
+import AuthForm from "./AuthForm";
 import Footer from "./Footer";
 import Header from "./Header";
 import Main from "./Main";
@@ -114,7 +113,7 @@ function App() {
     setCardToDelete({});
   }
 
-  let loggedIn = true;
+  let loggedIn = false;
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -122,6 +121,36 @@ function App() {
         <div className="page">
           <Header />
           <Switch>
+            <Route path="/sign-in">
+              {loggedIn ? (
+                <Redirect to="/" />
+              ) : (
+                <AuthForm
+                  authFormType={"login"}
+                  // onSubmit={handleLoginSubmit}
+                  // email={email}
+                  // password={password}
+                  // onEmailChange={handleEmailChange}
+                  // onPasswordChange={handlePasswordChange}
+                />
+              )}
+            </Route>
+
+            <Route path="/sign-up">
+              {loggedIn ? (
+                <Redirect to="/" />
+              ) : (
+                <AuthForm
+                  authFormType={"register"}
+                  // onSubmit={handleLoginSubmit}
+                  // email={email}
+                  // password={password}
+                  // onEmailChange={handleEmailChange}
+                  // onPasswordChange={handlePasswordChange}
+                />
+              )}
+            </Route>
+
             <ProtectedRoute
               exact
               path="/"
@@ -135,12 +164,14 @@ function App() {
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
             />
-            <Route path="/sign-up">
+
+            {/* <Route path="/sign-up">
               <Register />
             </Route>
             <Route path="/sign-in">
               <Login />
-            </Route>
+            </Route> */}
+
             <Route path="*">
               {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
             </Route>
