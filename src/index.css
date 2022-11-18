@@ -15,7 +15,6 @@
 @import url(./blocks/auth-form/__submit-button/auth-form__submit-button.css);
 @import url(./blocks/auth-form/__cta/auth-form__cta.css);
 @import url(./blocks/auth-form/__cta-link/auth-form__cta-link.css);
-
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
 @import url(./blocks/header/__email/header__email.css);
@@ -59,3 +58,5 @@
 @import url(./blocks/popup/_type/popup_type_image.css);
 @import url(./blocks/popup/__container/_type/popup__container_type_image.css);
 @import url(./blocks/popup/__close/_type/popup__close_type_image.css);
+@import url(./blocks/popup/__registration-image/popup__registration-image.css);
+@import url(./blocks/popup/__registration-message/popup__registration-message.css);

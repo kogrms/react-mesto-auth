@@ -11,6 +11,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmPopup from "./ConfirmPopup";
+import InfoTooltip from "./InfoTooltip";
 import api from "../utils/api.js";
 import * as auth from "../utils/auth.js";
 
@@ -114,6 +115,8 @@ function App() {
   }
 
   let loggedIn = false;
+  let success = false;
+  let isInfoTooltipOpen = true;
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -135,7 +138,6 @@ function App() {
                 />
               )}
             </Route>
-
             <Route path="/sign-up">
               {loggedIn ? (
                 <Redirect to="/" />
@@ -150,7 +152,6 @@ function App() {
                 />
               )}
             </Route>
-
             <ProtectedRoute
               exact
               path="/"
@@ -164,20 +165,11 @@ function App() {
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
             />
-
-            {/* <Route path="/sign-up">
-              <Register />
-            </Route>
-            <Route path="/sign-in">
-              <Login />
-            </Route> */}
-
             <Route path="*">
               {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
             </Route>
           </Switch>
           {loggedIn && <Footer />}
-
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
@@ -199,6 +191,13 @@ function App() {
             onConfirmDeletion={handleConfirmDeletion}
           />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          {!loggedIn && (
+            <InfoTooltip
+              success={success}
+              isOpen={isInfoTooltipOpen}
+              onClose={closeAllPopups}
+            />
+          )}
         </div>
       </div>
     </CurrentUserContext.Provider>

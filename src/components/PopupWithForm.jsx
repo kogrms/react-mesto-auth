@@ -49,13 +49,15 @@ function PopupWithForm({
           onSubmit={onSubmit}
         >
           {children}
-          <button
-            type="submit"
-            className="form__submit-button"
-            aria-label="Кнопка отправки формы"
-          >
-            {buttonText}
-          </button>
+          {!(name === "infotooltip") && (
+            <button
+              type="submit"
+              className="form__submit-button"
+              aria-label="Кнопка отправки формы"
+            >
+              {buttonText}
+            </button>
+          )}
         </form>
       </div>
     </div>
