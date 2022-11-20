@@ -1,4 +1,4 @@
-import myId from "./myid";
+import myid from "./myid";
 
 class Api {
   constructor(id) {
@@ -75,6 +75,6 @@ class Api {
   }
 }
 
-const api = new Api(myId);
+const api = new Api(myid);
 
 export default api;
