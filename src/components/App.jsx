@@ -36,16 +36,10 @@ function App() {
 
   const history = useHistory();
 
-  // useEffect(() => {
-  //   api.getUserInfo().then(setCurrentUser).catch(console.log);
-  //   api.getInitialCards().then(setCards).catch(console.log);
-  // }, []);
-
   useEffect(() => {
     if (token) {
       Promise.all([api.getUserInfo(), api.getInitialCards()])
         .then(([userData, cardData]) => {
-          // setEmail(userData.email);
           setCurrentUser(userData);
           setCards(cardData);
           setLoggedIn(true);
@@ -53,6 +47,24 @@ function App() {
         .catch((err) => console.log(err));
     }
   }, [loggedIn, token]);
+
+  const checkToken = useCallback(() => {
+    if (!token) {
+      return;
+    }
+    auth
+      .getUserInfo(token)
+      .then((res) => {
+        setLoggedIn(true);
+        setEmail(res.data.email);
+        history.push("/");
+      })
+      .catch((err) => console.log(err));
+  }, [token, history]);
+
+  useEffect(() => {
+    checkToken();
+  }, [checkToken]);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
@@ -173,6 +185,7 @@ function App() {
     auth
       .signIn({ password, email })
       .then((data) => {
+        setEmail("");
         setPassword("");
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
@@ -192,24 +205,6 @@ function App() {
     setIsInfoTooltipOpen(false);
     history.push("/sign-in");
   }
-
-  const checkToken = useCallback(() => {
-    if (!token) {
-      return;
-    }
-    auth
-      .getUserInfo(token)
-      .then((res) => {
-        setLoggedIn(true);
-        setEmail(res.data.email);
-        history.push("/");
-      })
-      .catch((err) => console.log(err));
-  }, [token, history]);
-
-  useEffect(() => {
-    checkToken();
-  }, [checkToken]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
