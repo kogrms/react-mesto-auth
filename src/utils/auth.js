@@ -1,5 +1,8 @@
-const baseUrl = "https://auth.nomoreparties.co";
-const headers = { "Content-Type": "application/json" };
+// const baseUrl = "https://auth.nomoreparties.co";
+// const headers = { "Content-Type": "application/json" };
+import baseData from "./baseData";
+const baseUrl = baseData.link;
+const headers = baseData.headers;
 
 function handleResponse(res) {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
@@ -24,9 +27,6 @@ export function signIn({ password, email }) {
 export function getUserInfo(token) {
   return fetch(`${baseUrl}/users/me`, {
     method: "GET",
-    headers: {
-      ...headers,
-      Authorization: `Bearer ${token}`,
-    },
+    headers
   }).then((res) => handleResponse(res));
 }
