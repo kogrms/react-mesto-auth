@@ -36,31 +36,19 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const history = useHistory();
-
-  // useEffect(() => {
-  //   if (token) {
-  //     Promise.all([api.getUserInfo(), api.getInitialCards()])
-  //       .then(([userData, cardData]) => {
-  //         setCurrentUser(userData);
-  //         setCards(cardData);
-  //         setLoggedIn(true);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [loggedIn, token]);
   
-  useEffect(() => {
+   useEffect(() => {
     if (token) {
+      setIsLoading(true);
       Promise.all([api.getUserInfo(), api.getInitialCards()])
-        .then(([userData, cardData]) => {
-          setCurrentUser(userData);
-          setCards(cardData);
-          setLoggedIn(true);
+        .then(([user, cards]) => {
+          setCurrentUser(user.data);
+          setCards(cards.data);
         })
         .catch((err) => console.log(err))
         .finally(() => setIsLoading(false));
     }
-  }, [loggedIn, token]);
+  }, [token]);
 
   const checkToken = useCallback(() => {
     if (!token) {

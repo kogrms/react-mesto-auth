@@ -1,11 +1,15 @@
 import React, { useContext } from "react";
-// import Card from "./Card";
+import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({
   onEditAvatar,
   onEditProfile,
   onAddPlace,
+  onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
   isLoading
 }) {
   const currentUser = useContext(CurrentUserContext);
@@ -20,7 +24,19 @@ function Main({
   //     />
   //   ))
   // );
-  const cardsElements = []
+  let cardsElements = []
+  if (isLoading === false) {
+    console.log('CARD isLoading', isLoading)
+    cardsElements = cards.map((card) => (
+      <Card
+        key={card._id}
+        onCardClick={onCardClick}
+        card={card}
+        onCardLike={onCardLike}
+        onCardDelete={onCardDelete}
+      />
+    ))
+  }
 
 
   return (
