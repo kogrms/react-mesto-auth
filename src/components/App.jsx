@@ -85,20 +85,17 @@ function App() {
     });
   }
 
-  function handleCardLike(card) {
-    setIsLoading(true);
+    function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
+          state.map((c) => (c._id === card._id ? newCard.data : c))
         );
       })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setIsLoading(false));
+      .catch((err) => console.log(err));
   }
 
   function handleCardDelete(card) {
