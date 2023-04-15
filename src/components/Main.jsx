@@ -9,61 +9,9 @@ function Main({
   onCardClick,
   cards,
   onCardLike,
-  onCardDelete,
-  isLoading
+  onCardDelete
 }) {
   const currentUser = useContext(CurrentUserContext);
-  // const cardsElements = isLoading === true ? ([]) : (
-  // cards.map((card) => (
-  // const cardsElements = cards.map((card) => (
-  //     <li key={card._id}>
-  //       <Card
-  //         onCardClick={onCardClick}
-  //         card={card}
-  //         onCardLike={onCardLike}
-  //         onCardDelete={onCardDelete}
-  //       />
-  //     </li>
-  //   )
-  // );
-
-  // const cardsElements = cards.map((item) => {
-  //     return (
-  //       <li key={item._id}>
-  //         <Card
-  //           card={item}
-  //           onCardClick={onCardClick}
-  //           onCardLike={onCardLike}
-  //           onCardDelete={onCardDelete}
-  //         />
-  //       </li>
-  //     );
-  //   });
-
-  // const cardsElements = isLoading === true ? ([]) : (
-  //   cards.map((card) => (
-  //     <Card
-  //       key={card._id}
-  //       onCardClick={onCardClick}
-  //       card={card}
-  //       onCardLike={onCardLike}
-  //       onCardDelete={onCardDelete}
-  //     />
-  //   ))
-  // );
-  // let cardsElements = []
-  // if (isLoading === false) {
-  //   console.log('CARD isLoading', isLoading)
-  //   cardsElements = cards.map((card) => (
-  //     <Card
-  //       card={card}
-  //       key={card._id}
-  //       onCardClick={onCardClick}
-  //       onCardLike={onCardLike}
-  //       onCardDelete={onCardDelete}
-  //     />
-  //   ))
-  // }
   let cardsElements = cards.map((card) => (
     <Card
       card={card}
@@ -76,9 +24,6 @@ function Main({
 
   return (
     <main className="content">
-      {/* {isLoading
-        ? ( <p>Loading...</p> )
-        : ( */}
           <>
             <section className="profile">
               <div className="profile__avatar-container">
@@ -115,13 +60,10 @@ function Main({
             </section>
             <section className="cards">
               <ul className="cards__container">
-                {/* {cardsElements ? cardsElements : []} 
-                */}
                 {cardsElements}
               </ul>
             </section>
           </>
-      {/* )} */}
     </main>
   );
 }

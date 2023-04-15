@@ -33,7 +33,6 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const history = useHistory();
 
@@ -57,14 +56,12 @@ function App() {
 
   useEffect(() => {
     if (loggedIn === true) {
-      setIsLoading(true);
       Promise.all([api.getUserInfo(), api.getInitialCards()])
         .then(([user, cards]) => {
           setCurrentUser(user.data);
           setCards(cards.data);
         })
         .catch((err) => console.log(err))
-        .finally(() => setIsLoading(false));
     }
   }, [loggedIn]);
 
@@ -208,10 +205,6 @@ function App() {
     history.push("/sign-in");
   }
 
-  if (isLoading) {
-    return <div>Загрузка...</div>;
-  }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -251,7 +244,6 @@ function App() {
               path="/"
               component={Main}
               loggedIn={loggedIn}
-              isLoading={isLoading}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
               onEditAvatar={handleEditAvatarClick}
