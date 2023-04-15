@@ -33,9 +33,22 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const history = useHistory();
 
+  // useEffect(() => {
+  //   if (token) {
+  //     Promise.all([api.getUserInfo(), api.getInitialCards()])
+  //       .then(([userData, cardData]) => {
+  //         setCurrentUser(userData);
+  //         setCards(cardData);
+  //         setLoggedIn(true);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [loggedIn, token]);
+  
   useEffect(() => {
     if (token) {
       Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -44,7 +57,8 @@ function App() {
           setCards(cardData);
           setLoggedIn(true);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(() => setIsLoading(false));
     }
   }, [loggedIn, token]);
 
@@ -245,6 +259,7 @@ function App() {
               path="/"
               component={Main}
               loggedIn={loggedIn}
+              isLoading={isLoading}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
               onEditAvatar={handleEditAvatarClick}
