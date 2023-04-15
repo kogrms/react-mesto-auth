@@ -36,19 +36,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const history = useHistory();
-  
-   useEffect(() => {
-    if (token) {
-      setIsLoading(true);
-      Promise.all([api.getUserInfo(), api.getInitialCards()])
-        .then(([user, cards]) => {
-          setCurrentUser(user.data);
-          setCards(cards.data);
-        })
-        .catch((err) => console.log(err))
-        .finally(() => setIsLoading(false));
-    }
-  }, [token]);
 
   const checkToken = useCallback(() => {
     if (!token) {
@@ -68,6 +55,19 @@ function App() {
     checkToken();
   }, [checkToken]);
 
+  useEffect(() => {
+    if (loggedIn === true) {
+      setIsLoading(true);
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([user, cards]) => {
+          setCurrentUser(user.data);
+          setCards(cards.data);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setIsLoading(false));
+    }
+  }, [loggedIn]);
+
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -78,6 +78,7 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
   function handleCardClick(card) {
+    console.log(card)
     setSelectedCard({
       isOpen: true,
       ...card,
@@ -85,6 +86,7 @@ function App() {
   }
 
   function handleCardLike(card) {
+    setIsLoading(true);
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -95,7 +97,8 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setIsLoading(false));
   }
 
   function handleCardDelete(card) {
@@ -109,7 +112,7 @@ function App() {
     api
       .setUserInfo(newUserData)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -119,7 +122,7 @@ function App() {
     api
       .addNewAvatar(newAvatar)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -129,7 +132,7 @@ function App() {
     api
       .addNewCard(newCard)
       .then((res) => {
-        setCards([res, ...cards]);
+        setCards([res.data, ...cards]);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -206,6 +209,10 @@ function App() {
     setLoggedIn(false);
     setIsInfoTooltipOpen(false);
     history.push("/sign-in");
+  }
+
+  if (isLoading) {
+    return <div>Загрузка...</div>;
   }
 
   return (

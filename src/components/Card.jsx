@@ -3,6 +3,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = useContext(CurrentUserContext);
+  console.log(card.owner._id, currentUser._id)
   const isOwn = card.owner._id === currentUser._id;
   const cardDeleteButtonClassName = `card__delete ${
     isOwn ? "" : "card__delete_hidden"
@@ -25,7 +26,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   }
 
   return (
-    <li className="card">
+    <li className="card" key={card._id}>
       <button
         type="button"
         onClick={handleCardDelete}

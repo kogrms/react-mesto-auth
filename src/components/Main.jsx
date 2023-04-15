@@ -13,6 +13,17 @@ function Main({
   isLoading
 }) {
   const currentUser = useContext(CurrentUserContext);
+    const cardsElements = isLoading === true ? ([]) : (
+    cards.map((card) => (
+      <Card
+        key={card._id}
+        onCardClick={onCardClick}
+        card={card}
+        onCardLike={onCardLike}
+        onCardDelete={onCardDelete}
+      />
+    ))
+  );
   // const cardsElements = isLoading === true ? ([]) : (
   //   cards.map((card) => (
   //     <Card
@@ -24,19 +35,19 @@ function Main({
   //     />
   //   ))
   // );
-  let cardsElements = []
-  if (isLoading === false) {
-    console.log('CARD isLoading', isLoading)
-    cardsElements = cards.map((card) => (
-      <Card
-        key={card._id}
-        onCardClick={onCardClick}
-        card={card}
-        onCardLike={onCardLike}
-        onCardDelete={onCardDelete}
-      />
-    ))
-  }
+  // let cardsElements = []
+  // if (isLoading === false) {
+  //   console.log('CARD isLoading', isLoading)
+  //   cardsElements = cards.map((card) => (
+  //     <Card
+  //       card={card}
+  //       key={card._id}
+  //       onCardClick={onCardClick}
+  //       onCardLike={onCardLike}
+  //       onCardDelete={onCardDelete}
+  //     />
+  //   ))
+  // }
 
 
   return (
@@ -79,7 +90,7 @@ function Main({
               ></button>
             </section>
             <section className="cards">
-              <ul className="cards__container">{cardsElements}</ul>
+              <ul className="cards__container">{cardsElements ? cardsElements : []}</ul>
             </section>
           </>
       )}
