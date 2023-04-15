@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+// import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import ProtectedRoute from "./ProtectedRoute";
@@ -29,41 +30,86 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
-  const token = localStorage.getItem("token");
+  // let token = localStorage.getItem("token");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
   const history = useHistory();
 
-  const checkToken = useCallback(() => {
-    if (!token) {
-      return;
-    }
-    auth
-      .getUserInfo(token)
+  useEffect(() => {
+    const jwt = localStorage.getItem('token');
+    if (jwt) {
+      api.checkToken(jwt)
       .then((res) => {
+        setCurrentUser(res.data); 
         setLoggedIn(true);
         setEmail(res.data.email);
-        history.push("/");
+        history.push('/');
       })
-      .catch((err) => console.log(err));
-  }, [token, history]);
+      .catch((err) => {
+        setLoggedIn(false);
+        console.log(err);
+      });
+    }
+  }, [history]);
 
   useEffect(() => {
-    checkToken();
-  }, [checkToken]);
+    if (loggedIn) {
+      api.updateToken();
 
-  useEffect(() => {
-    if (loggedIn === true) {
-      Promise.all([api.getUserInfo(), api.getInitialCards()])
-        .then(([user, cards]) => {
-          setCurrentUser(user.data);
-          setCards(cards.data);
-        })
-        .catch((err) => console.log(err))
+      Promise.all([api.getInitialCards(), api.getUserInfo()])
+      .then(([cards, user]) => {
+        setCards(cards.data);
+        setCurrentUser(user.data);
+        setEmail(user.data.email);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     }
   }, [loggedIn]);
+
+  // const checkToken = useCallback(() => {
+  //   if (!token) {
+  //     return;
+  //   }
+  //   auth
+  //     .getUserInfo(token)
+  //     .then((res) => {
+  //       setLoggedIn(true);
+  //       setEmail(res.data.email);
+  //       history.push("/");
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [token, history]);
+
+  // useEffect(() => {
+  //   checkToken();
+  // }, [checkToken]);
+
+  // useEffect(() => {
+  //   if(!loggedIn) {
+  //     return
+  //   }
+  //   Promise.all([api.getUserInfo(), api.getInitialCards()])
+  //     .then(([user, cards]) => {
+  //       setCurrentUser(user.data);
+  //       setCards(cards.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [loggedIn]);
+
+  // useEffect(() => {
+  //   if (loggedIn === true) {
+  //     Promise.all([api.getUserInfo(), api.getInitialCards()])
+  //       .then(([user, cards]) => {
+  //         setCurrentUser(user.data);
+  //         setCards(cards.data);
+  //       })
+  //       .catch((err) => console.log(err))
+  //   }
+  // }, [loggedIn]);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);

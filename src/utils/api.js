@@ -73,6 +73,38 @@ class Api {
       }),
     }).then(this._handleResponse);
   }
+
+  // checkToken() {
+  //   return fetch(`${this.link}/checktoken`, {
+  //     method: "GET",
+  //     headers: this.headers,
+  //     // credentials: "include",
+  //   })
+  //   .then(this._handleResponse);
+  // }
+
+  checkToken (token) {
+    return fetch(`${this.link}/users/me`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization" : `Bearer ${token}`
+      }
+    })
+    .then((this._handleResponse))
+    .then((res) => {
+      if (res.data.email){
+        return res;
+      }
+    });
+  };
+
+  updateToken() {
+    this.headers = {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json',
+    }
+  }
 }
 
 const api = new Api(baseData);
