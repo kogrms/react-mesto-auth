@@ -70,47 +70,6 @@ function App() {
     }
   }, [loggedIn]);
 
-  // const checkToken = useCallback(() => {
-  //   if (!token) {
-  //     return;
-  //   }
-  //   auth
-  //     .getUserInfo(token)
-  //     .then((res) => {
-  //       setLoggedIn(true);
-  //       setEmail(res.data.email);
-  //       history.push("/");
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, [token, history]);
-
-  // useEffect(() => {
-  //   checkToken();
-  // }, [checkToken]);
-
-  // useEffect(() => {
-  //   if(!loggedIn) {
-  //     return
-  //   }
-  //   Promise.all([api.getUserInfo(), api.getInitialCards()])
-  //     .then(([user, cards]) => {
-  //       setCurrentUser(user.data);
-  //       setCards(cards.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, [loggedIn]);
-
-  // useEffect(() => {
-  //   if (loggedIn === true) {
-  //     Promise.all([api.getUserInfo(), api.getInitialCards()])
-  //       .then(([user, cards]) => {
-  //         setCurrentUser(user.data);
-  //         setCards(cards.data);
-  //       })
-  //       .catch((err) => console.log(err))
-  //   }
-  // }, [loggedIn]);
-
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -121,7 +80,6 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
   function handleCardClick(card) {
-    console.log(card)
     setSelectedCard({
       isOpen: true,
       ...card,

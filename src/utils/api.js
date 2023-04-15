@@ -74,15 +74,6 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  // checkToken() {
-  //   return fetch(`${this.link}/checktoken`, {
-  //     method: "GET",
-  //     headers: this.headers,
-  //     // credentials: "include",
-  //   })
-  //   .then(this._handleResponse);
-  // }
-
   checkToken (token) {
     return fetch(`${this.link}/users/me`, {
       method: 'GET',
