@@ -2,7 +2,7 @@ import baseData from "./baseData";
 
 class Api {
   constructor(id) {
-    this.link = id.link;
+    this.baseUrl = id.baseUrl;
     this.headers = id.headers;
   }
 
@@ -14,21 +14,21 @@ class Api {
   };
 
   getUserInfo() {
-    return fetch(`${this.link}/users/me`, {
+    return fetch(`${this.baseUrl}/users/me`, {
       method: "GET",
       headers: this.headers,
     }).then(this._handleResponse);
   }
 
   getInitialCards() {
-    return fetch(`${this.link}/cards`, {
+    return fetch(`${this.baseUrl}/cards`, {
       method: "GET",
       headers: this.headers,
     }).then(this._handleResponse);
   }
 
   setUserInfo(newUserData) {
-    return fetch(`${this.link}/users/me`, {
+    return fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify(newUserData),
@@ -36,7 +36,7 @@ class Api {
   }
 
   addNewCard(newCard) {
-    return fetch(`${this.link}/cards`, {
+    return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({
@@ -47,7 +47,7 @@ class Api {
   }
 
   addNewAvatar(link) {
-    return fetch(`${this.link}/users/me/avatar`, {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify(link),
@@ -55,7 +55,7 @@ class Api {
   }
 
   deleteCard(id) {
-    return fetch(`${this.link}/cards/${id}`, {
+    return fetch(`${this.baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this.headers,
       body: JSON.stringify({
@@ -65,7 +65,7 @@ class Api {
   }
 
   changeLikeCardStatus(id, like) {
-    return fetch(`${this.link}/cards/${id}/likes`, {
+    return fetch(`${this.baseUrl}/cards/${id}/likes`, {
       method: like ? "PUT" : "DELETE",
       headers: this.headers,
       body: JSON.stringify({
@@ -75,7 +75,7 @@ class Api {
   }
 
   checkToken (token) {
-    return fetch(`${this.link}/users/me`, {
+    return fetch(`${this.baseUrl}/users/me`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
